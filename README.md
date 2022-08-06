@@ -1,7 +1,7 @@
 # 2018 IDA Connect SDN event
 
 
-[Event description](./image.png)
+![Event description](./image.png)
 
 # Acknowledgements
 
