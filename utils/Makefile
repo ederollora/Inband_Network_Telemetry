@@ -5,7 +5,7 @@ LOG_DIR = logs
 P4C = p4c-bm2-ss
 P4C_ARGS += --p4runtime-files $(BUILD_DIR)/$(basename $@).p4.p4info.txt
 
-RUN_SCRIPT = ../../utils/run_exercise.py
+RUN_SCRIPT = ../utils/run_exercise.py
 
 ifndef TOPO
 TOPO = topology.json
@@ -32,7 +32,8 @@ endif
 all: run
 
 run: build
-	sudo python $(RUN_SCRIPT) -t $(TOPO) $(run_args)
+	ls -l && sudo python3 $(RUN_SCRIPT) -t $(TOPO) $(run_args)
+
 
 stop:
 	sudo mn -c

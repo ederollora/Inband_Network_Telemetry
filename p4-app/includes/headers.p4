@@ -1,11 +1,3 @@
-
-#include "defines.p4"
-#include "standard_h.p4" // Eth, IP, TCP/UDP
-#include "int_report_h.p4"
-#include "int_tcp_udp_h.p4"
-
-
-
 @controller_header("packet_in")
 header packet_in_header_t {
     bit<9> ingress_port;

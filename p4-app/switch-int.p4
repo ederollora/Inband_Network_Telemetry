@@ -2,13 +2,22 @@
 #include <v1model.p4>
 
 #include "includes/defines.p4"
-#include "includes/checksum.p4"
-#include "includes/controller_io.p4"
+
+#include "includes/standard_h.p4" // Eth, IP, TCP/UDP
+#include "includes/int_report_h.p4"
+#include "includes/int_tcp_udp_h.p4"
 #include "includes/headers.p4"
-#include "includes/int.p4"
-#include "includes/parsers.p4"
+
 #include "includes/port_counters.p4"
+#include "includes/controller_io.p4"
+
+#include "includes/parsers.p4"
+
+#include "includes/checksum.p4"
+#include "includes/int.p4"
 #include "includes/table0.p4"
+
+
 
 
 control IngressImpl(inout headers_t hdr,

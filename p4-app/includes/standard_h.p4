@@ -1,6 +1,3 @@
-//STANDARD HEADERS, MOST USED ONES
-
-#include "defines.p4"
 
 header ethernet_t {
     macAddr_t dstAddr;

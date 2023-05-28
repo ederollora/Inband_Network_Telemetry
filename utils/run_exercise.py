@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # Copyright 2013-present Barefoot Networks, Inc.
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -19,18 +19,20 @@
 # We encourage you to dissect this script to better understand the BMv2/Mininet
 # environment used by the P4 tutorial.
 #
-import os, sys, json, subprocess, re, argparse
+import argparse
+import json
+import os
+import subprocess
 from time import sleep
 
-from p4_mininet import P4Switch, P4Host
-
+import p4runtime_lib.simple_controller
+from mininet.cli import CLI
+from mininet.link import TCLink
 from mininet.net import Mininet
 from mininet.topo import Topo
-from mininet.link import TCLink
-from mininet.cli import CLI
-
+from p4_mininet import P4Host, P4Switch
 from p4runtime_switch import P4RuntimeSwitch
-import p4runtime_lib.simple_controller
+
 
 def configureP4Switch(**switch_args):
     """ Helper class that is called by mininet to initialize
@@ -45,7 +47,7 @@ def configureP4Switch(**switch_args):
                 P4RuntimeSwitch.__init__(self, *opts, **kwargs)
 
             def describe(self):
-                print "%s -> gRPC port: %d" % (self.name, self.grpc_port)
+                print("%s -> gRPC port: %d" % (self.name, self.grpc_port))
 
         return ConfiguredP4RuntimeSwitch
     else:
@@ -59,7 +61,7 @@ def configureP4Switch(**switch_args):
                 P4Switch.__init__(self, *opts, **kwargs)
 
             def describe(self):
-                print "%s -> Thrift port: %d" % (self.name, self.thrift_port)
+                print("%s -> Thrift port: %d" % (self.name, self.thrift_port))
 
         return ConfiguredP4Switch
 
@@ -79,7 +81,7 @@ class ExerciseTopo(Topo):
             else:
                 switch_links.append(link)
 
-        for sw, params in switches.iteritems():
+        for sw, params in switches.items():
             if "program" in params:
                 switchClass = configureP4Switch(
                         sw_path=bmv2_exe,
@@ -143,7 +145,7 @@ class ExerciseRunner:
 
     def format_latency(self, l):
         """ Helper method for parsing link latencies from the topology json. """
-        if isinstance(l, (str, unicode)):
+        if isinstance(l, str):
             return l
         else:
             return str(l) + "ms"
@@ -273,7 +275,9 @@ class ExerciseRunner:
                 device_id=device_id,
                 sw_conf_file=sw_conf_file,
                 workdir=os.getcwd(),
-                proto_dump_fpath=outfile)
+                proto_dump_fpath=outfile,
+                runtime_json=runtime_json
+            )
 
     def program_switch_cli(self, sw_name, sw_dict):
         """ This method will start up the CLI and use the contents of the
@@ -297,7 +301,7 @@ class ExerciseRunner:
             P4Runtime, depending if any command or runtime JSON files were
             provided for the switches.
         """
-        for sw_name, sw_dict in self.switches.iteritems():
+        for sw_name, sw_dict in self.switches.items():
             if 'cli_input' in sw_dict:
                 self.program_switch_cli(sw_name, sw_dict)
             if 'runtime_json' in sw_dict:
@@ -306,7 +310,7 @@ class ExerciseRunner:
     def program_hosts(self):
         """ Execute any commands provided in the topology.json file on each Mininet host
         """
-        for host_name, host_info in self.hosts.items():
+        for host_name, host_info in list(self.hosts.items()):
             h = self.net.get(host_name)
             if "commands" in host_info:
                 for cmd in host_info["commands"]:
@@ -381,4 +385,3 @@ if __name__ == '__main__':
                               args.switch_json, args.behavioral_exe, args.quiet)
 
     exercise.run_exercise()
-

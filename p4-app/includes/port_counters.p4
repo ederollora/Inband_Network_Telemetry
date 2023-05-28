@@ -1,9 +1,3 @@
-
-// I do not use this file, but some of the past examples included it
-
-#include "headers.p4"
-#include "defines.p4"
-
 control Port_counters_ingress(inout headers_t hdr,
                               inout standard_metadata_t standard_metadata) {
 
